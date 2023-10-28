@@ -1,4 +1,4 @@
-package br.com.gerenciador.exception;
+package br.com.gerenciador.usuario.exception;
 
 public class UsuarioNaoEncontradoException extends RuntimeException {
 

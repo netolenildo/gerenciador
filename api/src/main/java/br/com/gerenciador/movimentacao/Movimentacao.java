@@ -26,7 +26,7 @@ public class Movimentacao {
     private LocalDate data;
 
     @Column(name = "tipo_movimentacao")
-    private TipoMovimentacao tipoMovimentacao;
+    private ETipoMovimentacao tipoMovimentacao;
 
     private Double valor;
 
@@ -37,4 +37,8 @@ public class Movimentacao {
     @Column(name = "data_hora_cadastro", updatable = false)
     private LocalDateTime dataHoraCadastro;
 
+
+    public Double getValor() {
+        return valor * tipoMovimentacao.getValor();
+    }
 }

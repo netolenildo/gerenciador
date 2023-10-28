@@ -1,14 +1,28 @@
 package br.com.gerenciador.veiculo.dto;
 
+import br.com.gerenciador.movimentacao.dto.MovimentacaoDTO;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Getter
-@Builder
 public class VeiculoDTO {
 
-    private Long id;
+    private final Long id;
 
-    private String placa;
+    private final String placa;
 
+    private List<MovimentacaoDTO> movimentacoes;
+
+    @Builder
+    private VeiculoDTO(Long id, String placa) {
+        this.id = id;
+        this.placa = placa;
+    }
+
+    public void setMovimentacoes(List<MovimentacaoDTO> movimentacoes) {
+        this.movimentacoes = movimentacoes;
+    }
 }

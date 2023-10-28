@@ -13,7 +13,4 @@ public interface VeiculoRepository extends CrudRepository<Veiculo, Long> {
     @Query("SELECT v.id, v.placa FROM Veiculo v WHERE v.usuario.id = :id ORDER BY v.placa ASC")
     List<Veiculo> findVeiculosByIdUsuario(Long idUsuario);
 
-    boolean existsVeiculoByPlaca(String placa);
-
-
 }

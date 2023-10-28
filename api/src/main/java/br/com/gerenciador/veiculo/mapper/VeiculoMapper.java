@@ -3,10 +3,24 @@ package br.com.gerenciador.veiculo.mapper;
 import br.com.gerenciador.veiculo.Veiculo;
 import br.com.gerenciador.veiculo.dto.VeiculoDTO;
 import br.com.gerenciador.veiculo.dto.VeiculoForm;
+import br.com.gerenciador.veiculo.mapper.IVeiculoMapper;
+import org.springframework.stereotype.Component;
 
-public interface VeiculoMapper {
+@Component
+public class VeiculoMapper implements IVeiculoMapper {
 
-    Veiculo toModel(VeiculoForm veiculoForm);
+    @Override
+    public Veiculo toModel(VeiculoForm veiculoForm) {
+        return Veiculo.builder()
+                .placa(veiculoForm.getPlaca())
+                .build();
+    }
 
-    VeiculoDTO fromModel(Veiculo veiculo);
+    @Override
+    public VeiculoDTO fromModel(Veiculo veiculo) {
+        return VeiculoDTO.builder()
+                .id(veiculo.getId())
+                .placa(veiculo.getPlaca())
+                .build();
+    }
 }

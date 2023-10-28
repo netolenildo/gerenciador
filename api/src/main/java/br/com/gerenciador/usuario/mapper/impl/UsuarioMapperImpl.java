@@ -4,7 +4,7 @@ import br.com.gerenciador.usuario.Usuario;
 import br.com.gerenciador.usuario.dto.UsuarioDTO;
 import br.com.gerenciador.usuario.dto.UsuarioForm;
 import br.com.gerenciador.usuario.mapper.UsuarioMapper;
-import br.com.gerenciador.veiculo.mapper.VeiculoMapper;
+import br.com.gerenciador.veiculo.mapper.IVeiculoMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class UsuarioMapperImpl implements UsuarioMapper {
 
-    private final VeiculoMapper veiculoMapper;
+    private final IVeiculoMapper IVeiculoMapper;
 
     @Override
     public Usuario toModel(UsuarioForm usuarioForm) {
@@ -33,7 +33,7 @@ public class UsuarioMapperImpl implements UsuarioMapper {
                 .login(usuario.getLogin())
                 .nome(usuario.getNome())
                 .email(usuario.getEmail())
-                .veiculos(usuario.getVeiculos().stream().map(veiculoMapper::fromModel).collect(Collectors.toSet()))
+                .veiculos(usuario.getVeiculos().stream().map(IVeiculoMapper::fromModel).collect(Collectors.toSet()))
                 .build();
     }
 }

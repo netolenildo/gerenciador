@@ -1,10 +1,10 @@
 package br.com.gerenciador.veiculo.dto;
 
 import jakarta.validation.constraints.NotBlank;
-import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
-@Builder
+@Setter
 @Getter
 public class VeiculoForm {
 
