@@ -1,5 +1,6 @@
 package br.com.gerenciador.movimentacao.service;
 
+import br.com.gerenciador.comum.AbstractService;
 import br.com.gerenciador.movimentacao.dto.MovimentacaoDTO;
 import br.com.gerenciador.movimentacao.dto.MovimentacaoForm;
 import br.com.gerenciador.movimentacao.mapper.IMovimentacaoMapper;
@@ -13,7 +14,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class MovimentacaoService implements IMovimentacaoService{
+public class MovimentacaoService extends AbstractService implements IMovimentacaoService {
 
     private final MovimentacaoRepository movimentacaoRepository;
 

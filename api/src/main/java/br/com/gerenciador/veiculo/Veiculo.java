@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 
 @Entity
-@Table(schema = "gerenciador", name = "veiculo")
+@Table(schema="gerenciador", name = "veiculo")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -27,7 +27,7 @@ public class Veiculo {
     private String placa;
 
     @ManyToOne
-    @JoinColumn(name = "id_usuario")
+    @JoinColumn(name = "id_usuario", updatable = false)
     private Usuario usuario;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "veiculo")

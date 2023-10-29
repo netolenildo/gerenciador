@@ -8,11 +8,13 @@ import jakarta.websocket.server.PathParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/veiculos")
+@PreAuthorize("@hasRole('COMUM')")
 public class VeiculoController {
 
     private final IVeiculoService veiculoService;
@@ -48,9 +50,9 @@ public class VeiculoController {
     }
 
     @GetMapping
-    public ResponseEntity<Object> listar(@PathParam("idUsuario") Long idUsuario) {
+    public ResponseEntity<Object> listar() {
         try {
-            return ResponseEntity.ok(this.veiculoService.listarVeiculos(idUsuario));
+            return ResponseEntity.ok(this.veiculoService.listarVeiculos());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }

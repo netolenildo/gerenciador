@@ -1,5 +1,6 @@
 package br.com.gerenciador.movimentacao;
 
+import br.com.gerenciador.movimentacao.converter.TipoMovimentacaoConverter;
 import br.com.gerenciador.veiculo.Veiculo;
 import jakarta.persistence.*;
 import lombok.*;
@@ -8,7 +9,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(schema = "gerenciador", name = "movimentacao")
+@Table(schema="gerenciador", name = "movimentacao")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -26,6 +27,7 @@ public class Movimentacao {
     private LocalDate data;
 
     @Column(name = "tipo_movimentacao")
+    @Convert(converter = TipoMovimentacaoConverter.class)
     private ETipoMovimentacao tipoMovimentacao;
 
     private Double valor;

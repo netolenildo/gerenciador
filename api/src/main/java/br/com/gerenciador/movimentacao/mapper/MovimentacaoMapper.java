@@ -23,6 +23,7 @@ public class MovimentacaoMapper implements IMovimentacaoMapper{
     @Override
     public MovimentacaoDTO fromModel(Movimentacao movimentacao) {
         return MovimentacaoDTO.builder()
+                .id(movimentacao.getId())
                 .descricao(movimentacao.getDescricao())
                 .data(movimentacao.getData())
                 .tipoMovimentacao(movimentacao.getTipoMovimentacao().name())

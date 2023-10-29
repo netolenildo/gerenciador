@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 import java.util.Set;
 
 @Entity
-@Table(schema = "gerenciador", name = "usuario")
+@Table(schema="gerenciador", name = "usuario")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -33,13 +33,14 @@ public class Usuario {
     @Column(unique = true)
     private String email;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
-            name = "usuario_papeis",
+            schema = "gerenciador",
+            name = "usuario_autorizacoes",
             joinColumns = @JoinColumn(name = "id_usuario"),
-            inverseJoinColumns = @JoinColumn(name = "id_papel")
+            inverseJoinColumns = @JoinColumn(name = "id_autorizacao")
     )
-    private Set<Autorizacao> papeis;
+    private Set<Autorizacao> autorizacoes;
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
     private Set<Veiculo> veiculos;

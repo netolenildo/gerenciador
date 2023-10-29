@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class UsuarioMapperImpl implements UsuarioMapper {
 
-    private final IVeiculoMapper IVeiculoMapper;
+    private final IVeiculoMapper veiculoMapper;
 
     @Override
     public Usuario toModel(UsuarioForm usuarioForm) {
@@ -33,7 +33,7 @@ public class UsuarioMapperImpl implements UsuarioMapper {
                 .login(usuario.getLogin())
                 .nome(usuario.getNome())
                 .email(usuario.getEmail())
-                .veiculos(usuario.getVeiculos().stream().map(IVeiculoMapper::fromModel).collect(Collectors.toSet()))
+                .veiculos(usuario.getVeiculos().stream().map(veiculoMapper::fromModel).collect(Collectors.toSet()))
                 .build();
     }
 }

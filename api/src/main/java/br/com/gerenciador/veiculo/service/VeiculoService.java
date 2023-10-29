@@ -1,6 +1,8 @@
 package br.com.gerenciador.veiculo.service;
 
+import br.com.gerenciador.comum.AbstractService;
 import br.com.gerenciador.movimentacao.service.IMovimentacaoService;
+import br.com.gerenciador.usuario.Usuario;
 import br.com.gerenciador.veiculo.Veiculo;
 import br.com.gerenciador.veiculo.dto.VeiculoDTO;
 import br.com.gerenciador.veiculo.dto.VeiculoForm;
@@ -15,7 +17,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class VeiculoService implements IVeiculoService {
+public class VeiculoService extends AbstractService implements IVeiculoService {
 
     private final VeiculoRepository veiculoRepository;
 
@@ -25,7 +27,9 @@ public class VeiculoService implements IVeiculoService {
 
     @Override
     public void cadastrar(VeiculoForm veiculoForm) {
-        this.veiculoRepository.save(this.veiculoMapper.toModel(veiculoForm));
+        Veiculo veiculo = this.veiculoMapper.toModel(veiculoForm);
+        veiculo.setUsuario(Usuario.builder().id(getUsuarioLogado().getId()).build());
+        this.veiculoRepository.save(veiculo);
     }
 
     @Override
@@ -41,8 +45,8 @@ public class VeiculoService implements IVeiculoService {
     }
 
     @Override
-    public List<VeiculoDTO> listarVeiculos(Long idUsuario) {
-        return this.veiculoRepository.findVeiculosByIdUsuario(idUsuario).stream().map(this.veiculoMapper::fromModel).collect(Collectors.toList());
+    public List<VeiculoDTO> listarVeiculos() {
+        return this.veiculoRepository.findVeiculosByIdUsuario(getUsuarioLogado().getId()).stream().map(this.veiculoMapper::fromModel).collect(Collectors.toList());
     }
 
     @Override

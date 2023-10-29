@@ -39,11 +39,13 @@ public class UsuarioService implements IUsuarioService {
 
     @Override
     public void atualizar(UsuarioForm usuarioForm, Long id) {
-        if (repository.existsUsuarioByEmail(usuarioForm.getEmail())) {
+        Usuario usuarioBd = this.repository.findById(id).orElseThrow(UsuarioNaoEncontradoException::new);
+
+        if (!usuarioForm.getEmail().equals(usuarioBd.getEmail()) && repository.existsUsuarioByEmail(usuarioForm.getEmail())) {
             throw new EmailExistenteException();
         }
 
-        if (repository.existsUsuarioByLogin(usuarioForm.getLogin())) {
+        if (!usuarioForm.getLogin().equals(usuarioBd.getLogin()) && repository.existsUsuarioByLogin(usuarioForm.getLogin())) {
             throw new LoginExistenteException();
         }
 
@@ -71,5 +73,10 @@ public class UsuarioService implements IUsuarioService {
         }
 
         return usuarios.stream().map(mapper::fromModel).collect(Collectors.toList());
+    }
+
+    @Override
+    public Usuario obterUsuarioPorLogin(String login) {
+        return this.repository.findUsuarioByLogin(login);
     }
 }

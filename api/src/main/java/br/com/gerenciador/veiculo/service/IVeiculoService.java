@@ -13,7 +13,7 @@ public interface IVeiculoService {
 
     void remover(Long id);
 
-    List<VeiculoDTO> listarVeiculos(Long idUsuario);
+    List<VeiculoDTO> listarVeiculos();
 
     VeiculoDTO obterVeiculo(Long id);
 }
