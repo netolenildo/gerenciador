@@ -1,8 +1,8 @@
 package br.com.gerenciador.veiculo.service;
 
-import br.com.gerenciador.comum.AbstractService;
 import br.com.gerenciador.movimentacao.service.IMovimentacaoService;
 import br.com.gerenciador.usuario.Usuario;
+import br.com.gerenciador.usuario.service.UsuarioService;
 import br.com.gerenciador.veiculo.Veiculo;
 import br.com.gerenciador.veiculo.dto.VeiculoDTO;
 import br.com.gerenciador.veiculo.dto.VeiculoForm;
@@ -10,6 +10,8 @@ import br.com.gerenciador.veiculo.exception.VeiculoNaoEncontradoException;
 import br.com.gerenciador.veiculo.mapper.IVeiculoMapper;
 import br.com.gerenciador.veiculo.repository.VeiculoRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,18 +19,20 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class VeiculoService extends AbstractService implements IVeiculoService {
+public class VeiculoService implements IVeiculoService {
 
     private final VeiculoRepository veiculoRepository;
 
     private final IMovimentacaoService movimentacaoService;
+
+    private final UsuarioService usuarioService;
 
     private final IVeiculoMapper veiculoMapper;
 
     @Override
     public void cadastrar(VeiculoForm veiculoForm) {
         Veiculo veiculo = this.veiculoMapper.toModel(veiculoForm);
-        veiculo.setUsuario(Usuario.builder().id(getUsuarioLogado().getId()).build());
+        veiculo.setUsuario(getUsuarioLogado());
         this.veiculoRepository.save(veiculo);
     }
 
@@ -46,7 +50,8 @@ public class VeiculoService extends AbstractService implements IVeiculoService {
 
     @Override
     public List<VeiculoDTO> listarVeiculos() {
-        return this.veiculoRepository.findVeiculosByIdUsuario(getUsuarioLogado().getId()).stream().map(this.veiculoMapper::fromModel).collect(Collectors.toList());
+        Usuario usuario = getUsuarioLogado();
+        return this.veiculoRepository.findVeiculosByIdUsuario(usuario.getId()).stream().map(this.veiculoMapper::fromModel).collect(Collectors.toList());
     }
 
     @Override
@@ -55,5 +60,10 @@ public class VeiculoService extends AbstractService implements IVeiculoService {
        veiculo.setMovimentacoes(this.movimentacaoService.obterMovimentacoesMesAtual(id));
 
        return veiculo;
+    }
+
+    private Usuario getUsuarioLogado() {
+        UserDetails usuarioLogado = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return this.usuarioService.obterUsuarioPorLogin(usuarioLogado.getUsername());
     }
 }

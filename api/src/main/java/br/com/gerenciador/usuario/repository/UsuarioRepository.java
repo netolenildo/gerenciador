@@ -13,9 +13,6 @@ public interface UsuarioRepository extends CrudRepository<Usuario, Long> {
 
     List<Usuario> findAllBy();
 
-    @Query("SELECT u FROM Usuario u WHERE u.nome ILIKE :nome% ORDER BY u.nome ASC")
-    List<Usuario> findUsuarioByNome(@Param("nome") String nome);
-
     boolean existsUsuarioByEmail(String email);
 
     boolean existsUsuarioByLogin(String login);

@@ -15,7 +15,7 @@ import java.time.LocalDate;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/movimentacoes")
-@PreAuthorize("@hasRole('COMUM')")
+@PreAuthorize("hasRole('COMUM')")
 public class MovimentacaoController {
 
     private final IMovimentacaoService movimentacaoService;

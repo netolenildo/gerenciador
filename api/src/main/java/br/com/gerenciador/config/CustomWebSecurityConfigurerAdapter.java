@@ -1,11 +1,9 @@
 package br.com.gerenciador.config;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -19,20 +17,20 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
-@RequiredArgsConstructor
+@EnableMethodSecurity
 public class CustomWebSecurityConfigurerAdapter {
 
     @Bean
-    public UserDetailsService userDetailsService() {
+    public UserDetailsService user() {
         UserDetails admin = User.builder()
                 .username("admin")
-                .password("{noop}admin")
-                .roles("ADMIN")
+                .password(passwordEncoder().encode("admin"))
+                .roles("ADMIN", "COMUM")
                 .build();
 
         UserDetails comum = User.builder()
                 .username("comum")
-                .password("{noop}comum")
+                .password(passwordEncoder().encode("comum"))
                 .roles("COMUM")
                 .build();
 
@@ -42,11 +40,7 @@ public class CustomWebSecurityConfigurerAdapter {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
-            .authorizeHttpRequests(auth ->
-            auth.requestMatchers("*/usuarios","*/usuarios/*").hasRole("ADMIN")
-                .requestMatchers("*/veiculos","*/veiculos/*","*/movimentacoes","*/movimentacoes/*")
-                .hasAnyRole("COMUM", "ADMIN").anyRequest().authenticated()
-            )
+            .authorizeHttpRequests(auth ->auth.anyRequest().authenticated())
         .httpBasic(Customizer.withDefaults());
 
         return http.build();
