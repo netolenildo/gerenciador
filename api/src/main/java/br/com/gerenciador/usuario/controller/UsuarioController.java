@@ -6,17 +6,17 @@ import br.com.gerenciador.usuario.exception.NenhumUsuarioEncontradoException;
 import br.com.gerenciador.usuario.exception.UsuarioNaoEncontradoException;
 import br.com.gerenciador.usuario.service.*;
 import br.com.gerenciador.usuario.dto.UsuarioForm;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/usuarios")
-@PreAuthorize("@hasRole('ADMIN')")
+@RolesAllowed("ADMIN")
 public class UsuarioController {
 
     private final IUsuarioService usuarioService;
